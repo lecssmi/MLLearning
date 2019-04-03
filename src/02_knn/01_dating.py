@@ -5,10 +5,12 @@ import sys
 
 
 # 将每一行数据的前三个作为特征，最后一个数字作为标签
-def fileToMatrix(filename):
+def fileToMatrix(filename,value):
     fr = open(filename)
     length = len(fr.readlines())
-    returnMat = zeros((length, 3))
+    # returnMat = zeros((length, 3))
+
+    returnMat=[[]]
     classLabelVector=[]
 
     fr=open(filename)
@@ -18,9 +20,14 @@ def fileToMatrix(filename):
 
         split = line.split("\t")
 
-        returnMat[index,:]=split[0:3]
+        if int(split[-1])==value:
 
-        classLabelVector.append(int(split[-1]))
+            # returnMat[index]=split[0:3]
+
+            returnMat[0].append(split[0:3])
+            classLabelVector.append(int(split[-1]))
+
+
 
         index+=1
 
@@ -28,7 +35,7 @@ def fileToMatrix(filename):
 
 
 if __name__ == '__main__':
-    (mat,classLabelVector) = fileToMatrix("../../resources/02_knn/datingTestSet2.txt")
+    (mat1,classLabelVector1) = fileToMatrix("../../resources/02_knn/datingTestSet2.txt",1)
     #
     # print(classLabelVector)
 
@@ -39,17 +46,42 @@ if __name__ == '__main__':
     ax = figure.add_subplot(111)
 
     # 将第一列的和第二列单独拿出来做对比，分别将对应不同z值的点化成不同的颜色
-    mat1=[]
-    label1=[]
+    # mat1=[]
+    # label1=[]
+    #
+    # mat2=[]
+    # label2=[]
+    #
+    # index =0
+    # for x in mat[:,0]:
+    #     if classLabelVector[index]==1:
+    #         mat1.append(mat1)
+    #         label1.append(classLabelVector[index])
+    #     elif classLabelVector[index]==2:
+    #         mat2.append()
+    #
+    #     index+=1
+    #
+    #
+    #
+    #
+    # # 这里的x，y需要使用中括号括起来，不知道是为啥？API的变动？
+    ax.scatter([mat1[:, 0]], [mat1[:, 1]],c="r")
 
-    index =0
-    for x in mat[:,0]:
-        if classLabelVector[index]==1:
-            mat1.append(mat1)
+    (mat2, classLabelVector2) = fileToMatrix("../../resources/02_knn/datingTestSet2.txt", 2)
 
-    # 这里的x，y需要使用中括号括起来，不知道是为啥？API的变动？
-    ax.scatter([mat[:, 0]], [mat[:, 1]],cmap=classLabelVector)
+    ax.scatter([mat2[:, 0]], [mat1[:, 2]],c="g")
 
+    (mat3, classLabelVector3) = fileToMatrix("../../resources/02_knn/datingTestSet2.txt", 3)
+
+    ax.scatter([mat3[:, 0]], [mat3[:, 2]], c="b")
+
+
+
+
+
+
+    #
     plt.show()
 
 #     todo 继续将图绘制完毕
